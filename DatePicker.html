@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #9c27b0; /* Purple background */
+        color: white; /* White text for better contrast */
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h3 {
+        color: #fff;
+      }
+      .date-select {
+        display: flex; /* Aligns items in a row */
+        justify-content: space-between; /* Distributes space evenly */
+        margin-bottom: 20px;
+      }
+      select {
+        padding: 10px;
+        margin: 0 5px; /* Adds space between dropdowns */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100px; /* Fixed width for dropdowns */
+      }
+      button {
+        background-color: #e6e6fa; 
+        color: #333;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .button-container {
+        text-align: right;
+      }
+    </style>
+    <script>
+      function submitDate() {
+        var day = document.getElementById('day').value;
+        var month = document.getElementById('month').value;
+        var year = document.getElementById('year').value;
+        var selectedDate = year + '-' + month + '-' + day; // Format: YYYY-MM-DD
+        google.script.run.processDate(selectedDate);
+        google.script.host.close();
+      }
+
+      function populateDateFields() {
+        var today = new Date();
+        var currentDay = today.getDate();
+        var currentMonth = today.getMonth() + 1; // Months are zero-based
+        var currentYear = today.getFullYear();
+
+        // Populate day dropdown
+        var daySelect = document.getElementById('day');
+        for (var i = 1; i <= 31; i++) {
+          var option = document.createElement('option');
+          option.value = i;
+          option.text = i;
+          daySelect.appendChild(option);
+        }
+        daySelect.value = currentDay;
+
+        // Populate month dropdown
+        var monthSelect = document.getElementById('month');
+        for (var i = 1; i <= 12; i++) {
+          var option = document.createElement('option');
+          option.value = i;
+          option.text = i;
+          monthSelect.appendChild(option);
+        }
+        monthSelect.value = currentMonth;
+
+        // Populate year dropdown
+        var yearSelect = document.getElementById('year');
+        for (var i = currentYear - 10; i <= currentYear + 10; i++) {
+          var option = document.createElement('option');
+          option.value = i;
+          option.text = i;
+          yearSelect.appendChild(option);
+        }
+        yearSelect.value = currentYear;
+      }
+    </script>
+  </head>
+  <body onload="populateDateFields()">
+    <h3>Select a Date</h3>
+    <div class="date-select">
+      <select id="day"></select>
+      <select id="month"></select>
+      <select id="year"></select>
+    </div>
+    <div class="button-container">
+      <button onclick="submitDate()">Submit</button>
+      <button onclick="google.script.host.close()">Cancel</button>
+    </div>
+  </body>
+</html>
